@@ -1,17 +1,22 @@
-import Image from "next/image";
-import TodoList from "./components/TodoList";
-import Navigation from "./components/Navigation";
+'use client'
+
+import { useEffect } from 'react'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '../contexts/AuthContext'
+import Auth from "../components/Auth"
+import TodoList from "../components/TodoList"
 
 export default function Home() {
-  return (
-    <main className="min-h-screen bg-gray-50 py-8">
-      <div className="max-w-sm mx-auto px-4">
-        <Navigation />
-        <h1 className="text-3xl font-bold text-gray-700 text-center mb-8">
-          Todo App
-        </h1>
-        <TodoList />
-      </div>
-    </main>
-  );
+  const { user } = useAuth()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (user) {
+      router.push('/dashboard')
+    } else {
+      router.push('/signin')
+    }
+  }, [user, router])
+
+  return null
 }
